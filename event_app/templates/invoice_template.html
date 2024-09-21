@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Payment Invoice</title>
+  </head>
+  <body>
+    <h1>Payment Invoice for {{ event.title }}</h1>
+    <p>
+      <strong>Event Name:</strong> {{ event.title }}
+    </p>
+    <p>
+      <strong>Event ID:</strong> {{ event.id }}
+    </p>
+    <p>
+      <strong>Participant Name:</strong> {{ participant.username }}
+    </p>
+    <p>
+      <strong>Number of Members:</strong> {{ num_of_members }}
+    </p>
+    <p>
+      <strong>Organization:</strong> {{ organization.username }}
+    </p>
+    <p>
+      <strong>Ticket Price:</strong> ${{ ticket_price }}
+    </p>
+    <p>
+      <strong>Total Amount:</strong> ${{ total_amount }}
+    </p>
+    <p>
+      <strong>Transition ID:</strong> {{ transition_id }}
+    </p>
+  </body>
+</html>

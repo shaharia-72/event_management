@@ -1,0 +1,40 @@
+{% extends 'base_profile.html' %} {% block title %}
+  {% load static %}
+  <title>Organizer Profile</title>
+{% endblock %} {% block content %}
+  <h1 class="text-2xl font-semibold mb-6">Organizer Profile Details</h1>
+
+  <!-- Profile Details Section -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex flex-col items-center">
+        <label for="organization_image" class="font-medium text-gray-700 font-bold">Profile Image</label>
+        {% if profile.organization_image %}
+          <img src="{{ profile.organization_image.url }}" alt="Profile Image" class="w-40 h-40 object-cover rounded-full" />
+        {% else %}
+          <img src="{% static 'images/user.png' %}" alt="Profile Image" class="w-40 h-40 object-cover rounded-full" />
+        {% endif %}
+      </div>
+      <div class="flex flex-col">
+        <label for="organization_name" class="font-medium text-gray-700 font-bold">Organization Name</label>
+        <p class="p-2 border rounded bg-gray-100">{{ profile.organization_name }}</p>
+
+        <label for="email" class="font-medium text-gray-700 font-bold">Email</label>
+        <p class="p-2 border rounded bg-gray-100">{{ profile.user.email }}</p>
+
+        <label for="location" class="font-medium text-gray-700 font-bold">Location</label>
+        <p class="p-2 border rounded bg-gray-100">{{ profile.location }}</p>
+      </div>
+    </div>
+    <div class="flex flex-col">
+      <label for="description" class="font-medium text-gray-700 font-bold">Description</label>
+      <p class="p-2 border rounded bg-gray-100">{{ profile.description }}</p>
+    </div>
+  </div>
+
+  <!-- Update Profile and Change Password Buttons -->
+  <div class="bg-white shadow-md rounded-lg p-6 flex space-x-4">
+    <a href="#" class="block text-center font-bold bg-red-700 text-white py-2 px-4 rounded hover:bg-red-800">Change Password</a>
+    <a href="{% url 'update_organizer_profile' %}" class="block text-center font-bold bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700">Update Profile</a>
+  </div>
+{% endblock %}

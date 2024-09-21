@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <h1 class="my-4">Interest Submitted</h1>
+    <p>Your interest has been recorded. We will get back to you soon.</p>
+    <a href="{% url 'participant_event' %}" class="btn btn-primary">Back to Events</a>
+  </div>
+{% endblock %}

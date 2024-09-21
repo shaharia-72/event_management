@@ -1,0 +1,110 @@
+{% extends 'base.html' %} {% load widget_tweaks %} {% load static %} {% block title %}
+  <title>{{ object.event_title }} - Event Detail</title>
+{% endblock %} {% block body %}
+  <div class="container my-4">
+    <!-- Event Detail -->
+    <div class="row bg-white rounded-lg shadow-lg overflow-hidden">
+      <!-- Image Section -->
+      <div class="col-lg-6 p-2">
+        {% if object.event_image %}
+          <img src="{{ object.event_image.url }}" class="img-fluid rounded-lg" alt="{{ object.event_title }}" style="max-height: 400px" />
+        {% else %}
+          <img src="{% static 'images/default_event.svg' %}" class="img-fluid rounded-lg" alt="Default Event Image" style="max-height: 400px" />
+        {% endif %}
+      </div>
+
+      <!-- Details Section -->
+      <div class="col-lg-6 p-2 d-flex flex-column justify-content-between">
+        <div>
+          <h1 class="display-4 font-extrabold text-dark mb-4">{{ object.event_title }}</h1>
+
+          <!-- Description with fixed height -->
+          <div class="text-muted mb-4">
+            <strong class="text-dark">Description:</strong>
+            <p class="overflow-auto" style="max-height: 150px">{{ object.event_description }}</p>
+          </div>
+          <h6 class="font-weight-bold text-dark"><strong>Organizer:</strong> {{ object.organizer.organization_name }}</h6>
+          <h6 class="font-weight-bold text-dark"><strong>Location:</strong> {{ object.event_location }}</h6>
+          <h6 class="font-weight-bold text-dark"><strong>Function Date:</strong> {{ object.event_start_date }}</h6>
+          <h6 class="font-weight-bold text-dark"><strong>Event Ticket Price:</strong> {{ object.event_ticket_price }}</h6>
+        </div>
+        {% if user.is_organizer %}
+          <a href="#" class="btn btn-sm btn-warning">Edit</a>
+        {% elif user.is_participant %}
+          <button onclick="openModal()" class="btn btn-primary w-100 mt-4 viewbtn">Express Interest</button>
+        {% else %}
+          <a href="{% url 'register' %}" class="btn btn-primary w-100 mt-4 viewbtn">Register First</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="interestModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Interest</h5>
+          </div>
+          <div class="modal-body">
+            <h5>{{ object.event_title }}</h5>
+            <p>
+              <strong>Ticket Price: {{ object.event_ticket_price }} Taka Only Each Participant</strong>
+            </p>
+
+            <form id="interestForm" method="post" action="{% url 'participant_interest' object.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="number_of_participants">Number of Participants:</label>
+                <input type="number" id="number_of_participants" name="number_of_participants" class="form-control" min="1" required />
+              </div>
+
+              <div class="form-group">
+                <p>
+                  <strong>Total Price: <span id="total_price">0</span> Taka Only</strong>
+                </p>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message (Optional):</label>
+                <textarea id="message" name="message" class="form-control" rows="3"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary">Cancel</button>
+            <button type="button" onclick="submitForm()" class="btn btn-primary viewbtn">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Modal and Price Calculation -->
+  <script>
+  function openModal() {
+    $('#interestModal').modal('show');
+  }
+
+  function price_calculation() {
+    const number_of_participants = document.getElementById('number_of_participants').value;
+    const ticket_price = {{ object.event_ticket_price }};
+    const total_price = number_of_participants * ticket_price;
+    document.getElementById('total_price').textContent = total_price.toFixed(2);
+  }
+
+  document.getElementById('number_of_participants').addEventListener('input', price_calculation);
+
+  function submitForm() {
+    document.getElementById('interestForm').submit();
+  }
+
+  function closeModal() {
+    $('#interestModal').modal('hide');
+  }
+</script>
+{% endblock %}

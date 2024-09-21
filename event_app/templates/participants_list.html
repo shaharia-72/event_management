@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Participants List</title>
+  </head>
+  <body>
+    <h1>Participants List for {{ event.title }}</h1>
+    <p>
+      <strong>Event Name:</strong> {{ event.title }}
+    </p>
+    <p>
+      <strong>Event ID:</strong> {{ event.id }}
+    </p>
+    <p>
+      <strong>Organizer Name:</strong> {{ event.organizer.username }}
+    </p>
+    <p>
+      <strong>Organizer Email:</strong> {{ event.organizer.email }}
+    </p>
+
+    <h2>Participants</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Number of Members</th>
+          <th>Transition ID</th>
+          <th>Payment Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for participant in participants %}
+          <tr>
+            <td>{{ participant.participant.username }}</td>
+            <td>{{ participant.num_of_members }}</td>
+            <td>{{ participant.transition_id }}</td>
+            <td>Confirmed</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

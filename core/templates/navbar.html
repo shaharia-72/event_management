@@ -1,0 +1,51 @@
+<nav class="bg-gray-900 text-white py-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Left Side -->
+    <div class="flex items-center">
+      {% if user.is_authenticated %}
+        {% if user.is_organizer %}
+          <a href="{% url 'or-home' %}" class="text-xl font-bold text-white font-bold text-decoration-none">Home</a>
+        {% elif user.is_participant %}
+          <a href="{% url 'home' %}" class="text-xl font-bold text-white font-bold text-decoration-none">Home</a>
+        {% endif %} {% if user.is_organizer %}
+          <a href="{% url 'event-creation' %}" class="ml-6 text-xl font-bold text-white font-bold text-decoration-none">Create Event</a>
+        {% endif %}
+
+        <!-- Additional link for authenticated users -->
+        {% if user.is_organizer %}
+          <a href="{% url 'organizer_request_accept' %}" class="ml-6 text-lg text-white font-bold text-decoration-none">Organizer Dashboard</a>
+        {% elif user.is_participant %}
+          <a href="{% url 'participant_event_interest' %}" class="ml-6 text-lg text-white font-bold text-decoration-none">Participant Dashboard</a>
+        {% endif %}
+
+        {% if user.is_organizer %}
+          <a href="{% url 'organizer_history' %}" class="ml-6 text-lg text-white font-bold text-decoration-none">History</a>
+        {% elif user.is_participant %}
+          <a href="{% url 'participant_history' %}" class="ml-6 text-lg text-white font-bold text-decoration-none">History</a>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <!-- Right Side -->
+    <div class="flex items-center">
+      {% if user.is_authenticated %}
+        <!-- Profile Icon and Name -->
+        <span class="ml-6 flex items-center">
+          <i class="fas fa-user-circle text-xl mr-2"></i>
+          {% if user.is_organizer %}
+            <a href="{% url 'organizer_profile' %}" class="text-white-500 text-white font-bold text-decoration-none">{{ user.username }}</a>
+          {% elif user.is_participant %}
+            <a href="{% url 'participant_profile' %}" class="text-white-500 text-white font-bold text-decoration-none">{{ user.username }}</a>
+          {% endif %}
+        </span>
+
+        <!-- Logout -->
+        <a href="{% url 'logout' %}" class="ml-6 text-lg text-white font-bold text-decoration-none">Logout</a>
+      {% else %}
+        <!-- Login and Register Links -->
+        <a href="{% url 'login' %}" class="ml-6 text-lg text-white font-bold text-decoration-none">Login</a>
+        <a href="{% url 'register' %}" class="ml-6 text-lg text-white font-bold text-decoration-none">Register</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>

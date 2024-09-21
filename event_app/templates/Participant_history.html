@@ -1,0 +1,43 @@
+{% extends 'base_profile.html' %} {% block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Participant History</h1>
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Event Name</th>
+        <th>Location</th>
+        <th>Start Date</th>
+        <th>Organizer</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for participation in participations %}
+      <tr>
+        <td>{{ participation.event.event_title }}</td>
+        <td>{{ participation.event.event_location }}</td>
+        <td>{{ participation.event.event_start_date|date:'F j, Y, g:i a' }}</td>
+        <td>{{ participation.event.organizer.organization_name }}</td>
+        <td>
+          {% if participation.status == 'pending' %}
+          <button type="button" class="btn btn-danger btn-sm">Pending</button>
+          {% elif participation.status == 'confirmed' %}
+          <button type="button" class="btn btn-success btn-sm">
+            Confirmed
+          </button>
+          {% else %}
+          <button type="button" class="btn btn-secondary btn-sm">
+            Cancelled
+          </button>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center">No participation history found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

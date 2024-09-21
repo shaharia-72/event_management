@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block body %}
+  <div class="container mt-5">
+    <h3 class="text-center mb-4">Confirm Payment for {{ event.event_title }}</h3>
+
+    <div class="card">
+      <div class="card-body">
+        <p>
+          <strong>Event:</strong> {{ event.event_title }}
+        </p>
+        <p>
+          <strong>Organizer:</strong> {{ organizer.user.username }}
+        </p>
+        <p>
+          <strong>Ticket Price:</strong> {{ ticket_price }} USD
+        </p>
+        <p>
+          <strong>Number of Participants:</strong> {{ number_of_participants }}
+        </p>
+        <p>
+          <strong>Total Cost:</strong> {{ total_cost }} USD
+        </p>
+
+        <form method="POST" action="{% url 'payment_confirm' participation.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">Confirm Payment</button>
+          <a href="{% url 'participant_event_interest' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

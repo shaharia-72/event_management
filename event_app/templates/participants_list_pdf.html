@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Participants List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333;
+        margin: 0;
+      }
+      .invoice-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .invoice-header h1 {
+        font-size: 35px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .company-info {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .company-info p {
+        margin: 3px 0;
+      }
+      
+      .organization-info,
+      .event-info {
+        margin-bottom: 20px;
+      }
+      .table {
+        margin-top: 20px;
+      }
+      /* Adding additional styling for a solid border */
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        padding-top: 3px;
+        text-align: center;
+      }
+      .detail-title {
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .final-message {
+        margin-top: 20px;
+        text-align: center;
+        font-style: italic;
+        color: #555;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-header">
+      <h1>PARTICIPANTS LIST</h1>
+    </div>
+
+    <div class="company-info">
+      <p>
+        <strong>
+          Event Management Co. <br />
+          123 Event St., New York, NY 10001 <br />
+          Email: support@eventmanagement.com
+        </strong>
+      </p>
+    </div>
+
+    <div class="row organization-info">
+      <div class="col-md-6">
+        <h4 class="detail-title">Organization Info</h4> <br />
+        <p>
+          <strong>Name:</strong> {{ organizer.organization_name }} <br />
+          <strong>Location:</strong> {{ organizer.location }} <br />
+          <strong>Email:</strong> {{ organizer.user.email }} <br />
+        </p>
+      </div>
+      <div class="col-md-6 event-info">
+        <h4 class="detail-title">Event Info</h4> <br />
+        <p>
+          <strong>Event Name:</strong> {{ event.event_title }} <br />
+          <strong>Event ID:</strong> {{ event.event_id }} <br />
+          <strong>Max Participants:</strong> {{ event.event_max_participants }} <br />
+          <strong>Confirmed Payments:</strong> {{ participations.count }} <br />
+          <strong>Event Location:</strong> {{ event.event_location }} <br />
+          <strong>Registration Start Time:</strong> {{ event.event_registration_start }} <br />
+          <strong>Registration End Time:</strong> {{ event.event_registration_end }} <br />
+          <strong>Event Start Time:</strong> {{ event.event_start_date }} <br />
+        </p>
+      </div>
+    </div>
+
+    <h4 class="detail-title">Confirmed Participants List:</h4><br />
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="font-bold">Full Name</th>
+          <th class="font-bold">Invoice Number (Transition ID)</th>
+          <th class="font-bold">Email</th>
+          <th class="font-bold">Number of Participants</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for participation in participations %}
+          <tr>
+            <td>{{ participation.participant.user.username }}</td>
+            <td>{{ participation.transition_id }}</td>
+            <td>{{ participation.participant.user.email }}</td>
+            <td>{{ participation.number_of_participants }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="text-center font-bold">No participants confirmed payment.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="final-message">
+      <p>Thank you for choosing our platform for your event. We look forward to serving you again!</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Income Status</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333;
+        margin: 0;
+      }
+      .invoice-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .invoice-header h1 {
+        font-size: 35px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .company-info {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .company-info p {
+        margin: 3px 0;
+      }
+      .invoice-details {
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .invoice-details div {
+        display: flex;
+        justify-content: space-between;
+      }
+      .invoice-summary {
+        margin-top: 20px;
+      }
+      .invoice-summary p {
+        row-gap: None;
+        line-height: 1.2;
+      }
+      
+      .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+      }
+      .invoice-table th,
+      .invoice-table td {
+        border: 1px solid #dee2e6;
+        padding: 6px;
+        text-align: left;
+      }
+      .invoice-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+      .total-amount {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 5px;
+      }
+      .final-message {
+        margin-top: 20px;
+        text-align: center;
+        font-style: italic;
+        color: #555;
+        font-weight: bold;
+      }
+      .detail-title {
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-header">
+      <h1>INCOME STATUS REPORT</h1>
+    </div>
+
+    <div class="company-info">
+      <p>
+        <strong>
+          Event Management Co. <br />
+          123 Event St., New York, NY 10001 <br />
+          Email: support@eventmanagement.com
+        </strong>
+      </p>
+    </div>
+
+    <div class="invoice-details d-flex justify-content-between">
+      <div>
+        <h4 class="detail-title">Organization Info</h4>
+        <p>
+          <strong>Organization Name:</strong> {{ organizer.organization_name }} <br />
+          <strong>Email:</strong> {{ organizer.user.email }} <br />
+          <strong>Location:</strong> {{ organizer.location }} <br />
+        </p>
+      </div>
+      <div>
+        <h3 class="detail-title">Event Info</h3>
+        <p>
+          <strong>Event Name:</strong> {{ event.event_title }} <br />
+          <strong>Event ID:</strong> {{ event.event_id }} <br />
+          <strong>Registration Start:</strong> {{ event.event_registration_start }} <br />
+          <strong>Registration End:</strong> {{ event.event_registration_end }} <br />
+          <strong>Event Start:</strong> {{ event.event_start_date }} <br />
+        </p>
+      </div>
+    </div>
+
+    <div class="invoice-summary">
+      <h4 class="detail-title">Calculations</h4>
+      <p>
+        <strong>Total Seats:</strong> {{ event.event_max_participants }} <br />
+        <strong>Ticket Price:</strong> {{ event.event_ticket_price }} <br />
+        <strong>Interested Participants:</strong> {{ expressed_interest_count }} <br />
+        <strong>Confirmed Payment:</strong> {{ completed_payment_count }} <br />
+        <strong>Confirmed Participants:</strong> {{ participant_count_sum }} <br />
+      </p>
+      <table class="invoice-table">
+        <tr>
+          <th>Total Earnings:</th>
+          <td>${{ total_earnings|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          <th>VAT (15%):</th>
+          <td>{{ vat|floatformat:2 }} Taka</td>
+        </tr>
+        <tr>
+          <th>Platform Charge (5%):</th>
+          <td>{{ platform_charge|floatformat:2 }} Taka</td>
+        </tr>
+        <tr>
+          <th class="total-amount">Final Earnings:</th>
+          <td class="total-amount">{{ final_earnings|floatformat:2 }} Taka</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="final-message">
+      <p>Thank you for choosing our platform for your event. We look forward to serving you again!</p>
+    </div>
+  </body>
+</html>

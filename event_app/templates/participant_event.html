@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %} {% block body %}
+  <div class="container mt-5">
+    <!-- Hero Section -->
+    <div class="row my-5 align-items-center">
+      <h1 class="display-4 font-weight-bold">Welcome - {{ user.first_name }} {{ user.last_name }}</h1>
+      <div class="col-md-6 text-center text-md-start">
+        <p class="mt-4 lead text-muted">Discover a wide selection of premium events. Enjoy great experiences and engage in top-tier events, all just a click away.</p>
+      </div>
+    </div>
+
+    <!-- Main Section with Categories and Events -->
+    <div class="row mt-5">
+      <!-- Categories Section (3 columns) -->
+      <div class="col-md-3">
+        <h5 class="mb-3 my-3">Categories</h5>
+        <div class="box">
+          <ul class="list-group">
+            {% for category in categories %}
+              <a class="list-group-item list-group-item-action {% if category.id == active_category %}bg-primary text-white{% endif %}" href="{% url 'category' category.id %}">{{ category.category_name }}</a>
+            {% empty %}
+              <li class="list-group-item">No categories available.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Events Section (9 columns) -->
+      <div class="col-md-9">
+        <h2 class="text-center my-4">Upcoming Events</h2>
+
+        <!-- Card Wrapper with Fixed Height -->
+        <div class="box card-wrapper mb-4">
+          <div class="row">
+            {% for event in events %}
+              <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card border-primary h-100">
+                  {% if event.event_image %}
+                    <img src="{{ event.event_image.url }}" class="card-img-top" alt="{{ event.event_title }}" style="object-fit: cover; height: 150px" />
+                  {% else %}
+                    <img src="{% static 'images/default_event.svg' %}" class="card-img-top" alt="Default Image" style="object-fit: cover; height: 150px" />
+                  {% endif %}
+                  <div class="card-body d-flex flex-column h-100">
+                    <h6 class="card-title font-bold">{{ event.event_title }}</h6>
+                    <p class="card-text flex-grow-1">{{ event.event_description|slice:':100' }}...</p>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                      <a href="{% url 'event_detail' event.pk %}" class="btn btn-sm btn-primary viewbtn">View Details</a>
+                      <div class="d-flex flex-column align-items-end">
+                        {% comment %} <div class="register-end-box">Registration Ends In:</div> {% endcomment %}
+                        <div class="countdown-box">
+                          Registration Ends In:<p id="countdown-{{ event.pk }}"></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-12 text-center">
+                <p class="text-muted">No upcoming events available.</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="box d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              {% if events.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ events.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                </li>
+              {% endif %} {% for num in events.paginator.page_range %}
+                {% if events.number == num %}
+                  <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %} {% if events.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ events.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    {% for event in events %}
+      (function() {
+        var endDate = new Date("{{ event.event_registration_end|date:'Y-m-d H:i:s' }}").getTime();
+        var countdownElement = document.getElementById("countdown-{{ event.pk }}");
+
+        var interval = setInterval(function() {
+          var now = new Date().getTime();
+          var distance = endDate - now;
+
+          if (distance < 0) {
+            clearInterval(interval);
+            countdownElement.innerHTML = "Registration Closed";
+            return;
+          }
+
+          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        }, 1000);
+      })();
+    {% endfor %}
+  });
+  </script>
+{% endblock %}

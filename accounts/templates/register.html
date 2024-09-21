@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block body %}
+  <h1 class="text-center font-bold fs-1 mb-4">Register</h1>
+  <div class="container">
+    <div class="row">
+      <!-- Buttons Above the Image -->
+      <div class="col-md-12 mb-4 text-center">
+        <button id="participant-button" class="btn btn-primary me-2" onclick="showForm('participant')">Register as Participant</button>
+        <button id="organizer-button" class="btn btn-secondary" onclick="showForm('organizer')">Register as Organizer</button>
+      </div>
+
+      <!-- Static Image on the left -->
+      <div class="col-md-6 d-flex justify-content-center align-items-center">
+        <img src="{% static 'images/sign_in.png' %}" alt="Static Image" class="img-fluid" />
+      </div>
+
+      <!-- Registration Forms on the right -->
+      <div class="col-md-6">
+        <!-- Participant form (default visible) -->
+        <div id="participant-form" class="form-container shadow p-4 mb-4 bg-light rounded" style="display: block;">
+          <h2>Participant Registration</h2>
+          <form id="registration-form" method="post" enctype="multipart/form-data" action="{% url 'register_participant' %}">
+            {% csrf_token %}
+            <div id="participant-fields">
+              <div class="mb-3">
+                <label for="{{ participant_form.username.id_for_label }}" class="form-label">Username</label>
+                {{ participant_form.username|add_class:'form-control' }}
+                {% for error in participant_form.username.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ participant_form.first_name.id_for_label }}" class="form-label">First Name</label>
+                {{ participant_form.first_name|add_class:'form-control' }}
+                {% for error in participant_form.first_name.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ participant_form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                {{ participant_form.last_name|add_class:'form-control' }}
+                {% for error in participant_form.last_name.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ participant_form.email.id_for_label }}" class="form-label">Email</label>
+                {{ participant_form.email|add_class:'form-control' }}
+                {% for error in participant_form.email.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ participant_form.password1.id_for_label }}" class="form-label">Password</label>
+                {{ participant_form.password1|add_class:'form-control' }}
+                {% for error in participant_form.password1.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ participant_form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                {{ participant_form.password2|add_class:'form-control' }}
+                {% for error in participant_form.password2.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ participant_form.profile_image.id_for_label }}" class="form-label">Profile Image</label>
+                {{ participant_form.profile_image|add_class:'form-control' }}
+                {% for error in participant_form.profile_image.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Organizer form (hidden by default) -->
+        <div id="organizer-form" class="form-container shadow p-4 mb-4 bg-light rounded" style="display: none;">
+          <h2>Organizer Registration</h2>
+          <form id="registration-form" method="post" enctype="multipart/form-data" action="{% url 'register_organizer' %}">
+            {% csrf_token %}
+            <div id="organizer-fields">
+              <div class="mb-3">
+                <label for="{{ organizer_form.username.id_for_label }}" class="form-label">Username</label>
+                {{ organizer_form.username|add_class:'form-control' }}
+                {% for error in organizer_form.username.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ organizer_form.organization_name.id_for_label }}" class="form-label">Organization Name</label>
+                {{ organizer_form.organization_name|add_class:'form-control' }}
+                {% for error in organizer_form.organization_name.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ organizer_form.email.id_for_label }}" class="form-label">Email</label>
+                {{ organizer_form.email|add_class:'form-control' }}
+                {% for error in organizer_form.email.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ organizer_form.location.id_for_label }}" class="form-label">Location</label>
+                {{ organizer_form.location|add_class:'form-control' }}
+                {% for error in organizer_form.location.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ organizer_form.description.id_for_label }}" class="form-label">Organization Description</label>
+                {{ organizer_form.description|add_class:'form-control' }}
+                {% for error in organizer_form.description.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ organizer_form.password1.id_for_label }}" class="form-label">Password</label>
+                {{ organizer_form.password1|add_class:'form-control' }}
+                {% for error in organizer_form.password1.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ organizer_form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                {{ organizer_form.password2|add_class:'form-control' }}
+                {% for error in organizer_form.password2.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="{{ organizer_form.organization_image.id_for_label }}" class="form-label">Organization Image</label>
+                {{ organizer_form.organization_image|add_class:'form-control' }}
+                {% for error in organizer_form.organization_image.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showForm(formType) {
+      const participantForm = document.getElementById('participant-form')
+      const organizerForm = document.getElementById('organizer-form')
+      const participantButton = document.getElementById('participant-button')
+      const organizerButton = document.getElementById('organizer-button')
+    
+      if (formType === 'participant') {
+        participantForm.style.display = 'block'
+        organizerForm.style.display = 'none'
+        participantButton.classList.add('btn-primary')
+        participantButton.classList.remove('btn-secondary')
+        organizerButton.classList.add('btn-secondary')
+        organizerButton.classList.remove('btn-primary')
+      } else if (formType === 'organizer') {
+        organizerForm.style.display = 'block'
+        participantForm.style.display = 'none'
+        organizerButton.classList.add('btn-primary')
+        organizerButton.classList.remove('btn-secondary')
+        participantButton.classList.add('btn-secondary')
+        participantButton.classList.remove('btn-primary')
+      }
+    }
+    
+    // Show the participant form by default on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      showForm('participant')
+    })
+  </script>
+{% endblock %}

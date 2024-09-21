@@ -1,0 +1,54 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Manage Event Requests</h1>
+
+    <form method="GET" class="mb-4">
+        <label for="eventDropdown" class="form-label">Select an Event:</label>
+        <select id="eventDropdown" name="event_id" class="form-select" onchange="this.form.submit()">
+            <option value="">Select an Event</option>
+            {% for event in events %}
+                <option value="{{ event.event_id }}" {% if event.event_id == selected_event_id %}selected{% endif %}>
+                    {{ event.event_title }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if selected_event %}
+        <h2>{{ selected_event.event_title }}</h2>
+        <p>Location: {{ selected_event.event_location }}</p>
+        <p>Max Participants: {{ selected_event.event_max_participants }}</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Participants</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participation, form in forms %}
+                    <tr>
+                        <td>{{ participation.participant.user.username }}</td>
+                        <td>{{ participation.participant.user.email }}</td>
+                        <td>{{ participation.number_of_participants }}</td>
+                        <td>
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{ form.participation_id.as_widget }}
+                                {{ form.event_id.as_widget }}
+                                <button type="submit" name="action" value="accept" class="btn btn-success btn-sm">Accept</button>
+                                <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}
