@@ -20,6 +20,7 @@ lxml
 oscrypto
 pillow
 psycopg2
+psycopg2-binary
 pycparser
 pyHanko
 pyhanko-certvalidator

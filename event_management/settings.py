@@ -1,5 +1,7 @@
+import dj_database_url
 import os, environ
 from pathlib import Path
+
 # from dotenv import load_dotenv
 
 # load_dotenv()
@@ -97,6 +99,14 @@ DATABASES = {
     }
 }
 
+# Replace the SQLite DATABASES configuration with PostgreSQL:
+DATABASES = {
+    'default': dj_database_url.config(
+        
+        
+        default='postgresql://events_management_user:zMxiNgY8MPwkEGzz8RRQrjCUK6eHrSCy@dpg-crnkjm2j1k6c739a86qg-a.oregon-postgres.render.com/events_management',        
+        )}
+
 
 
 
@@ -149,3 +159,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env("EMAIL")
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
