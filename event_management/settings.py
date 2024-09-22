@@ -22,10 +22,10 @@ SECRET_KEY = env("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = os.environ.get('DEBUG') == 'False'
 
 ALLOWED_HOSTS = ['*']
-CSRF_TEUSTED_ORIGINS =['https://event-management-8d69.onrender.com', 'http://*.127.0.0.1/']
+CSRF_TRUSTED_ORIGINS = ['https://event-management-8d69.onrender.com', 'http://*.127.0.0.1/']
 
 
 # Application definition
